@@ -1,32 +1,27 @@
-# React + TypeScript + Vite
+# Employee Management 
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A simple employee management application built with **React**, **TypeScript**, **Vite**, **Redux Toolkit**, and **Ant Design**. The application integrates a Mock API using **JSON Server**.
 
-Currently, two official plugins are available:
+## 💻 Installation & Setup Guide
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+### 1. Install Dependencies
+Open your terminal in the project directory and run:
+```bash
+npm install
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+### 2. Start the Application
+To run both the **React App** (Vite) and the **Mock API Server** (JSON Server) concurrently in the most convenient way, use:
+```bash
+npm run dev:all
+```
+This command will launch the following in parallel:
+- **Vite Web App**: Default at [http://localhost:5173](http://localhost:5173)
+- **JSON Server (API)**: Default at [http://localhost:3000](http://localhost:3000)
+
+---
+## 🔑 Default Login Credentials
+
+Use the sample account below to log into the application:
+- **Email**: `admin@gmail.com`
+- **Password**: `password123`
