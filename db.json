@@ -1,0 +1,40 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "admin@gmail.com",
+      "password": "password123",
+      "name": "Admin"
+    }
+  ],
+  "employees": [
+    {
+      "name": "Nguyen Van A",
+      "email": "a.nguyen@company.com",
+      "age": 29,
+      "phone": "0912345678",
+      "country": "Vietnam",
+      "image": "https://api.dicebear.com/7.x/adventurer/svg?seed=NguyenVanA",
+      "id": "1"
+    },
+    {
+      "id": "2",
+      "name": "Tran Thi B",
+      "email": "b.tran@company.com",
+      "age": 24,
+      "phone": "0987654321",
+      "country": "Vietnam",
+      "image": "https://api.dicebear.com/7.x/adventurer/svg?seed=TranThiB"
+    },
+    {
+      "id": "3",
+      "name": "John Doe",
+      "email": "john.doe@company.com",
+      "age": 35,
+      "phone": "01234567890",
+      "country": "USA",
+      "image": "https://api.dicebear.com/7.x/adventurer/svg?seed=JohnDoe"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
