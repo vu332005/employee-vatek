@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, message, Layout } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import {
   setEmployees,
@@ -17,6 +18,7 @@ import type { Employee } from "../types/employee";
 import socket from "../configs/socketClient";
 
 const EmployeePage = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { employees } = useAppSelector((state) => state.employee);
 
@@ -33,14 +35,14 @@ const EmployeePage = () => {
         const data = await employeeService.getAll();
         dispatch(setEmployees(data));
       } catch (err: any) {
-        message.error(err.message || "Không thể tải danh sách nhân viên");
+        message.error(err.message || t("employee.fetch_failed"));
       } finally {
         setLoading(false);
       }
     };
 
     fetchEmployees();
-  }, [dispatch]);
+  }, [dispatch, t]);
 
   // attach listen evnt when mount
   useEffect(() => {
@@ -65,10 +67,10 @@ const EmployeePage = () => {
     try {
       await employeeService.delete(id);
       dispatch(deleteEmployee(id));
-      message.success("Xóa nhân viên thành công!");
+      message.success(t("employee.delete_success"));
       socket.emit("notify_change", { type: "delete", payload: id });
     } catch (err: any) {
-      message.error(err.message || "Xóa nhân viên thất bại");
+      message.error(err.message || t("employee.delete_failed"));
     }
   };
 
@@ -91,18 +93,18 @@ const EmployeePage = () => {
           values,
         );
         dispatch(updateEmployee(updated));
-        message.success("Cập nhật nhân viên thành công!");
+        message.success(t("employee.save_success_update"));
         socket.emit("notify_change", { type: "update", payload: updated });
       } else {
         const created = await employeeService.create(values);
         dispatch(addEmployee(created));
-        message.success("Thêm nhân viên thành công!");
+        message.success(t("employee.save_success_create"));
         socket.emit("notify_change", { type: "create", payload: created });
       }
       setModalOpen(false);
       setEditingEmployee(null);
     } catch (err: any) {
-      message.error(err.message || "Lưu thông tin nhân viên thất bại");
+      message.error(err.message || t("employee.save_failed"));
     } finally {
       setSaveLoading(false);
     }
@@ -120,7 +122,7 @@ const EmployeePage = () => {
         <div className="bg-white p-6 rounded-lg shadow-sm">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
             <h1 className="text-xl font-bold text-gray-800 m-0">
-              Danh Sách Nhân Viên
+              {t("employee.list_title")}
             </h1>
             <div className="flex flex-col sm:flex-row gap-3">
               <SearchBar value={searchQuery} onChange={setSearchQuery} />
@@ -130,7 +132,7 @@ const EmployeePage = () => {
                 onClick={handleAddClick}
                 className="h-10 text-sm font-semibold"
               >
-                Thêm nhân viên
+                {t("employee.add_btn")}
               </Button>
             </div>
           </div>

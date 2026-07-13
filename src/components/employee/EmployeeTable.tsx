@@ -1,6 +1,6 @@
-
 import { Table, Button, Popconfirm, Avatar, Space } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import type { Employee } from '../../types/employee';
 import type { ColumnsType } from 'antd/es/table';
 
@@ -17,9 +17,11 @@ const EmployeeTable = ({
   onEdit,
   onDelete,
 }: EmployeeTableProps) => {
+  const { t } = useTranslation();
+
   const columns: ColumnsType<Employee> = [
     {
-      title: 'Ảnh đại diện',
+      title: t('table.avatar'),
       dataIndex: 'image',
       key: 'image',
       width: 120,
@@ -36,36 +38,36 @@ const EmployeeTable = ({
       ),
     },
     {
-      title: 'Họ và tên',
+      title: t('table.name'),
       dataIndex: 'name',
       key: 'name',
       sorter: (a, b) => a.name.localeCompare(b.name),
       render: (text: string) => <span className="font-semibold text-gray-800">{text}</span>,
     },
     {
-      title: 'Email',
+      title: t('table.email'),
       dataIndex: 'email',
       key: 'email',
     },
     {
-      title: 'Tuổi',
+      title: t('table.age'),
       dataIndex: 'age',
       key: 'age',
       align: 'center',
       sorter: (a, b) => a.age - b.age,
     },
     {
-      title: 'Số điện thoại',
+      title: t('table.phone'),
       dataIndex: 'phone',
       key: 'phone',
     },
     {
-      title: 'Quốc gia',
+      title: t('table.country'),
       dataIndex: 'country',
       key: 'country',
     },
     {
-      title: 'Hành động',
+      title: t('table.actions'),
       key: 'actions',
       align: 'center',
       width: 160,
@@ -76,16 +78,15 @@ const EmployeeTable = ({
             ghost
             icon={<EditOutlined />}
             onClick={() => onEdit(record)}
-            className="hover:scale-105 transition-transform"
           >
-            Sửa
+            {t('table.edit')}
           </Button>
           <Popconfirm
-            title="Xác nhận xóa"
-            description={`Bạn có chắc chắn muốn xóa nhân viên ${record.name}?`}
+            title={t('table.confirm_delete_title')}
+            description={t('table.confirm_delete_desc', { name: record.name })}
             onConfirm={() => onDelete(record.id)}
-            okText="Đồng ý"
-            cancelText="Hủy"
+            okText={t('table.ok_text')}
+            cancelText={t('table.cancel_text')}
             okButtonProps={{ danger: true }}
           >
             <Button
@@ -93,9 +94,8 @@ const EmployeeTable = ({
               type="primary"
               ghost
               icon={<DeleteOutlined />}
-              className="hover:scale-105 transition-transform"
             >
-              Xóa
+              {t('table.delete')}
             </Button>
           </Popconfirm>
         </Space>
@@ -111,7 +111,7 @@ const EmployeeTable = ({
       loading={loading}
       pagination={{
         pageSize: 5,
-        showTotal: (total) => `Tổng số ${total} nhân viên`,
+        showTotal: (total) => t('table.total_employees', { total }),
       }}
       scroll={{ x: 'max-content' }}
       className="shadow-md rounded-lg overflow-hidden"

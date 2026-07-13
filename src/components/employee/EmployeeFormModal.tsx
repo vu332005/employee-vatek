@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Modal, Form, Input, InputNumber } from "antd";
+import { useTranslation } from "react-i18next";
 import type { Employee } from "../../types/employee";
 
 interface EmployeeFormModalProps {
@@ -17,6 +18,7 @@ const EmployeeFormModal = ({
   onCancel,
   confirmLoading,
 }: EmployeeFormModalProps) => {
+  const { t } = useTranslation();
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -41,13 +43,13 @@ const EmployeeFormModal = ({
 
   return (
     <Modal
-      title={editingEmployee ? "Chỉnh sửa nhân viên" : "Thêm mới nhân viên"}
+      title={editingEmployee ? t("form.title_edit") : t("form.title_add")}
       open={open}
       onOk={handleSubmit}
       onCancel={onCancel}
       confirmLoading={confirmLoading}
-      okText={editingEmployee ? "Lưu thay đổi" : "Thêm mới"}
-      cancelText="Hủy"
+      okText={editingEmployee ? t("form.ok_edit") : t("form.ok_add")}
+      cancelText={t("form.cancel")}
     >
       <Form
         form={form}
@@ -57,75 +59,75 @@ const EmployeeFormModal = ({
       >
         <Form.Item
           name="name"
-          label="Họ và tên"
+          label={t("form.name_label")}
           rules={[
-            { required: true, message: "Vui lòng nhập họ và tên!" },
-            { min: 2, message: "Họ tên phải từ 2 ký tự trở lên!" },
+            { required: true, message: t("form.name_required") },
+            { min: 2, message: t("form.name_min") },
           ]}
         >
-          <Input placeholder="Nhập họ và tên" />
+          <Input placeholder={t("form.name_placeholder")} />
         </Form.Item>
 
         <Form.Item
           name="email"
-          label="Email"
+          label={t("form.email_label")}
           rules={[
-            { required: true, message: "Vui lòng nhập email!" },
-            { type: "email", message: "Email không đúng định dạng!" },
+            { required: true, message: t("form.email_required") },
+            { type: "email", message: t("form.email_invalid") },
           ]}
         >
-          <Input placeholder="Nhập email" />
+          <Input placeholder={t("form.email_placeholder")} />
         </Form.Item>
 
         <div className="grid grid-cols-2 gap-4">
           <Form.Item
             name="age"
-            label="Tuổi"
+            label={t("form.age_label")}
             rules={[
-              { required: true, message: "Vui lòng nhập tuổi!" },
+              { required: true, message: t("form.age_required") },
               {
                 type: "number",
                 min: 18,
                 max: 100,
-                message: "Tuổi phải từ 18 đến 100!",
+                message: t("form.age_range"),
               },
             ]}
           >
-            <InputNumber className="w-full" placeholder="Nhập tuổi" />
+            <InputNumber className="w-full" placeholder={t("form.age_placeholder")} />
           </Form.Item>
 
           <Form.Item
             name="phone"
-            label="Số điện thoại"
+            label={t("form.phone_label")}
             rules={[
-              { required: true, message: "Vui lòng nhập số điện thoại!" },
+              { required: true, message: t("form.phone_required") },
               {
                 pattern: /^[0-9+()\s-]{10,15}$/,
-                message: "Số điện thoại không hợp lệ!",
+                message: t("form.phone_invalid"),
               },
             ]}
           >
-            <Input placeholder="Nhập số điện thoại" />
+            <Input placeholder={t("form.phone_placeholder")} />
           </Form.Item>
         </div>
 
         <Form.Item
           name="country"
-          label="Quốc gia"
-          rules={[{ required: true, message: "Vui lòng nhập quốc gia!" }]}
+          label={t("form.country_label")}
+          rules={[{ required: true, message: t("form.country_required") }]}
         >
-          <Input placeholder="Nhập quốc gia" />
+          <Input placeholder={t("form.country_placeholder")} />
         </Form.Item>
 
         <Form.Item
           name="image"
-          label="Ảnh đại diện (URL)"
+          label={t("form.image_label")}
           rules={[
-            { required: true, message: "Vui lòng nhập URL ảnh đại diện!" },
-            { type: "url", message: "Vui lòng nhập link ảnh hợp lệ!" },
+            { required: true, message: t("form.image_required") },
+            { type: "url", message: t("form.image_invalid") },
           ]}
         >
-          <Input placeholder="Nhập URL ảnh đại diện" />
+          <Input placeholder={t("form.image_placeholder")} />
         </Form.Item>
       </Form>
     </Modal>

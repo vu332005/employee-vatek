@@ -3,17 +3,20 @@ import { Form, Input, Button, Card, message } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import FacebookLogin from "@greatsumini/react-facebook-login";
+import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../store/hooks";
 import { setUser } from "../store/slices/authSlice";
 import { authService } from "../services/authService";
 import useGoogleOAuth from "../hooks/useGoogleOAuth";
 import GoogleIcon from "../components/icon/GoogleIcon";
 import FacebookIcon from "../components/icon/FacebookIcon";
+import LanguageSwitcher from "../components/share/LanguageSwitcher";
 
 const FacebookLoginComponent = ((FacebookLogin as any).default ||
   FacebookLogin) as typeof FacebookLogin;
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [fbLoading, setFbLoading] = useState(false);
   const dispatch = useAppDispatch();
@@ -26,10 +29,10 @@ const LoginPage = () => {
     try {
       const user = await authService.login(values.email, values.password);
       dispatch(setUser(user));
-      message.success(`Đăng nhập thành công! `);
+      message.success(t("login.success"));
       navigate("/employees");
     } catch (err: any) {
-      message.error(err.message || "Đăng nhập thất bại");
+      message.error(err.message || t("login.failed"));
     } finally {
       setLoading(false);
     }
@@ -54,13 +57,19 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
+    <div className="relative flex min-h-screen items-center justify-center bg-gray-100 px-4">
+      {/* language Switcher */}
+      <LanguageSwitcher
+        className="absolute top-4 right-4 bg-white shadow-sm hover:bg-gray-50 z-10"
+        size="small"
+      />
+
       <Card className="w-full max-w-md shadow-lg rounded-xl border-0 p-4">
         <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Đăng nhập</h2>
-          <p className="text-gray-400 text-sm mt-1">
-            Hệ thống quản lý nhân viên
-          </p>
+          <h2 className="text-2xl font-bold text-gray-800">
+            {t("login.title")}
+          </h2>
+          <p className="text-gray-400 text-sm mt-1">{t("login.subtitle")}</p>
         </div>
 
         <Form
@@ -71,10 +80,10 @@ const LoginPage = () => {
         >
           <Form.Item
             name="email"
-            label="Email"
+            label={t("login.email")}
             rules={[
-              { required: true, message: "Vui lòng nhập email!" },
-              { type: "email", message: "Email không đúng định dạng!" },
+              { required: true, message: t("login.email_required") },
+              { type: "email", message: t("login.email_invalid") },
             ]}
           >
             <Input
@@ -86,8 +95,8 @@ const LoginPage = () => {
 
           <Form.Item
             name="password"
-            label="Mật khẩu"
-            rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
+            label={t("login.password")}
+            rules={[{ required: true, message: t("login.password_required") }]}
           >
             <Input.Password
               prefix={<LockOutlined className="text-gray-400" />}
@@ -104,7 +113,7 @@ const LoginPage = () => {
               disabled={googleLoading || fbLoading}
               className="w-full h-11 text-base font-semibold"
             >
-              Đăng nhập
+              {t("login.login_btn")}
             </Button>
           </Form.Item>
         </Form>
@@ -115,7 +124,7 @@ const LoginPage = () => {
           </div>
           <div className="relative flex justify-center text-xs uppercase">
             <span className="bg-white px-2 text-gray-500">
-              Hoặc đăng nhập bằng
+              {t("login.or_login_with")}
             </span>
           </div>
         </div>
@@ -127,14 +136,13 @@ const LoginPage = () => {
             onClick={() => loginWithGoogle()}
             loading={googleLoading}
             disabled={loading || fbLoading}
-            className="flex-1 h-11 flex items-center justify-center border border-gray-300 rounded-lg hover:border-gray-400 bg-white transition duration-200 text-base font-medium shadow-sm hover:shadow-md text-gray-700 hover:text-gray-900"
+            className="flex-1 h-11 flex items-center justify-center border border-gray-300 rounded-lg hover:border-gray-400 bg-white text-base font-medium shadow-sm hover:shadow-md text-gray-700 hover:text-gray-900"
           >
             Google
           </Button>
 
           <FacebookLoginComponent
             appId={appId}
-            // onProfileSuccess giúp tự động dùng accesstoken call /me để lấy ttin user
             onProfileSuccess={handleFacebookSuccess}
             onFail={(error) => {
               console.error("Facebook Login Failed:", error);
@@ -146,7 +154,7 @@ const LoginPage = () => {
                 onClick={onClick}
                 loading={fbLoading}
                 disabled={loading || googleLoading}
-                className="flex-1 h-11 flex items-center justify-center rounded-lg bg-[#1877F2] hover:bg-[#166FE5] text-white hover:text-white transition duration-200 text-base font-medium shadow-sm hover:shadow-md border-none"
+                className="flex-1 h-11 flex items-center justify-center rounded-lg bg-[#1877F2] hover:bg-[#166FE5] text-white hover:text-white text-base font-medium shadow-sm hover:shadow-md border-none"
               >
                 Facebook
               </Button>
