@@ -5,6 +5,12 @@
       "email": "admin@gmail.com",
       "password": "password123",
       "name": "Admin"
+    },
+    {
+      "email": "vudepzai3322@gmail.com",
+      "name": "Trần Anh Vũ",
+      "picture": "https://lh3.googleusercontent.com/a/ACg8ocLIL6D9I9FOaUPEBmY7v5IfjcqGl_-1_htBTCNtZl_izv3AHvuO=s96-c",
+      "id": "h_XIKrBpaMY"
     }
   ],
   "employees": [

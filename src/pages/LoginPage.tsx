@@ -5,11 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../store/hooks";
 import { setUser } from "../store/slices/authSlice";
 import { authService } from "../services/authService";
+import useGoogleOAuth from "../hooks/useGoogleOAuth";
+import GoogleIcon from "../components/icon/GoogleIcon";
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { loginWithGoogle, loading: googleLoading } = useGoogleOAuth();
 
   const onFinish = async (values: any) => {
     setLoading(true);
@@ -73,12 +76,35 @@ const LoginPage = () => {
               type="primary"
               htmlType="submit"
               loading={loading}
+              disabled={googleLoading}
               className="w-full h-11 text-base font-semibold"
             >
               Đăng nhập
             </Button>
           </Form.Item>
         </Form>
+
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-200"></div>
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-white px-2 text-gray-500">
+              Hoặc đăng nhập bằng
+            </span>
+          </div>
+        </div>
+
+        <Button
+          type="default"
+          icon={<GoogleIcon />}
+          onClick={() => loginWithGoogle()}
+          loading={googleLoading}
+          disabled={loading}
+          className="w-full h-11 flex items-center justify-center border border-gray-300 rounded-lg hover:border-gray-400 bg-white transition duration-200 text-base font-medium shadow-sm hover:shadow-md text-gray-700 hover:text-gray-900"
+        >
+          Google
+        </Button>
       </Card>
     </div>
   );
