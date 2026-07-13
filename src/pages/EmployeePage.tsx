@@ -14,6 +14,7 @@ import EmployeeTable from "../components/employee/EmployeeTable";
 import EmployeeFormModal from "../components/employee/EmployeeFormModal";
 import EmployeeHeader from "../components/share/EmployeeHeader";
 import type { Employee } from "../types/employee";
+import socket from "../configs/socketClient";
 
 const EmployeePage = () => {
   const dispatch = useAppDispatch();
@@ -41,11 +42,31 @@ const EmployeePage = () => {
     fetchEmployees();
   }, [dispatch]);
 
+  // attach listen evnt when mount
+  useEffect(() => {
+    const handleSocketChange = (data: { type: string; payload: any }) => {
+      if (data.type === "delete") {
+        dispatch(deleteEmployee(data.payload));
+      } else if (data.type === "create") {
+        dispatch(addEmployee(data.payload));
+      } else if (data.type === "update") {
+        dispatch(updateEmployee(data.payload));
+      }
+    };
+
+    socket.on("employee_changed", handleSocketChange);
+
+    return () => {
+      socket.off("employee_changed", handleSocketChange);
+    };
+  }, [dispatch]);
+
   const handleDelete = async (id: string) => {
     try {
       await employeeService.delete(id);
       dispatch(deleteEmployee(id));
       message.success("Xóa nhân viên thành công!");
+      socket.emit("notify_change", { type: "delete", payload: id });
     } catch (err: any) {
       message.error(err.message || "Xóa nhân viên thất bại");
     }
@@ -71,10 +92,12 @@ const EmployeePage = () => {
         );
         dispatch(updateEmployee(updated));
         message.success("Cập nhật nhân viên thành công!");
+        socket.emit("notify_change", { type: "update", payload: updated });
       } else {
         const created = await employeeService.create(values);
         dispatch(addEmployee(created));
         message.success("Thêm nhân viên thành công!");
+        socket.emit("notify_change", { type: "create", payload: created });
       }
       setModalOpen(false);
       setEditingEmployee(null);

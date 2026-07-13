@@ -11,6 +11,12 @@
       "name": "Trần Anh Vũ",
       "picture": "https://lh3.googleusercontent.com/a/ACg8ocLIL6D9I9FOaUPEBmY7v5IfjcqGl_-1_htBTCNtZl_izv3AHvuO=s96-c",
       "id": "h_XIKrBpaMY"
+    },
+    {
+      "email": "taven.tran@vatek.asia",
+      "name": "Taven Tran",
+      "picture": "https://lh3.googleusercontent.com/a/ACg8ocJSSKWB_FAuhXtxVyEQvMnZQrk2W0UsXpCC4iHI0Qs7wGS1GuA=s96-c",
+      "id": "HTUUmhF"
     }
   ],
   "employees": [
@@ -24,22 +30,13 @@
       "id": "1"
     },
     {
-      "id": "2",
-      "name": "Tran Thi B",
+      "name": "Tran minh duc a",
       "email": "b.tran@company.com",
       "age": 24,
       "phone": "0987654321",
       "country": "Vietnam",
-      "image": "https://api.dicebear.com/7.x/adventurer/svg?seed=TranThiB"
-    },
-    {
-      "id": "3",
-      "name": "John Doe",
-      "email": "john.doe@company.com",
-      "age": 35,
-      "phone": "01234567890",
-      "country": "USA",
-      "image": "https://api.dicebear.com/7.x/adventurer/svg?seed=JohnDoe"
+      "image": "https://api.dicebear.com/7.x/adventurer/svg?seed=TranThiB",
+      "id": "2"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

@@ -4,8 +4,10 @@ import { ConfigProvider } from 'antd';
 import LoginPage from './pages/LoginPage';
 import EmployeePage from './pages/EmployeePage';
 import ProtectedRoute from './routes/ProtectedRoute';
+import useSocket from './hooks/useSocket';
 
 const App = () => {
+  useSocket();
   return (
     <ConfigProvider
       theme={{
