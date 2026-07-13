@@ -2,17 +2,24 @@ import { useState } from "react";
 import { Form, Input, Button, Card, message } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import FacebookLogin from "@greatsumini/react-facebook-login";
 import { useAppDispatch } from "../store/hooks";
 import { setUser } from "../store/slices/authSlice";
 import { authService } from "../services/authService";
 import useGoogleOAuth from "../hooks/useGoogleOAuth";
 import GoogleIcon from "../components/icon/GoogleIcon";
+import FacebookIcon from "../components/icon/FacebookIcon";
+
+const FacebookLoginComponent = ((FacebookLogin as any).default ||
+  FacebookLogin) as typeof FacebookLogin;
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
+  const [fbLoading, setFbLoading] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { loginWithGoogle, loading: googleLoading } = useGoogleOAuth();
+  const appId = import.meta.env.VITE_FACEBOOK_APP_ID || "";
 
   const onFinish = async (values: any) => {
     setLoading(true);
@@ -25,6 +32,24 @@ const LoginPage = () => {
       message.error(err.message || "Đăng nhập thất bại");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleFacebookSuccess = async (profile: any) => {
+    setFbLoading(true);
+    try {
+      const email = profile.email;
+      const user = await authService.loginWithFacebook({
+        name: profile.name || "",
+        email: email,
+        picture: profile.picture?.data?.url,
+      });
+      dispatch(setUser(user));
+      navigate("/employees");
+    } catch (error: any) {
+      console.error("Lỗi xác thực Facebook:", error);
+    } finally {
+      setFbLoading(false);
     }
   };
 
@@ -76,7 +101,7 @@ const LoginPage = () => {
               type="primary"
               htmlType="submit"
               loading={loading}
-              disabled={googleLoading}
+              disabled={googleLoading || fbLoading}
               className="w-full h-11 text-base font-semibold"
             >
               Đăng nhập
@@ -95,16 +120,39 @@ const LoginPage = () => {
           </div>
         </div>
 
-        <Button
-          type="default"
-          icon={<GoogleIcon />}
-          onClick={() => loginWithGoogle()}
-          loading={googleLoading}
-          disabled={loading}
-          className="w-full h-11 flex items-center justify-center border border-gray-300 rounded-lg hover:border-gray-400 bg-white transition duration-200 text-base font-medium shadow-sm hover:shadow-md text-gray-700 hover:text-gray-900"
-        >
-          Google
-        </Button>
+        <div className="flex gap-4">
+          <Button
+            type="default"
+            icon={<GoogleIcon />}
+            onClick={() => loginWithGoogle()}
+            loading={googleLoading}
+            disabled={loading || fbLoading}
+            className="flex-1 h-11 flex items-center justify-center border border-gray-300 rounded-lg hover:border-gray-400 bg-white transition duration-200 text-base font-medium shadow-sm hover:shadow-md text-gray-700 hover:text-gray-900"
+          >
+            Google
+          </Button>
+
+          <FacebookLoginComponent
+            appId={appId}
+            // onProfileSuccess giúp tự động dùng accesstoken call /me để lấy ttin user
+            onProfileSuccess={handleFacebookSuccess}
+            onFail={(error) => {
+              console.error("Facebook Login Failed:", error);
+            }}
+            render={({ onClick }) => (
+              <Button
+                type="default"
+                icon={<FacebookIcon />}
+                onClick={onClick}
+                loading={fbLoading}
+                disabled={loading || googleLoading}
+                className="flex-1 h-11 flex items-center justify-center rounded-lg bg-[#1877F2] hover:bg-[#166FE5] text-white hover:text-white transition duration-200 text-base font-medium shadow-sm hover:shadow-md border-none"
+              >
+                Facebook
+              </Button>
+            )}
+          />
+        </div>
       </Card>
     </div>
   );

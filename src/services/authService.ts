@@ -25,4 +25,18 @@ export const authService = {
     });
     return createResponse.data;
   },
+  loginWithFacebook: async (fbUser: { email: string; name: string; picture?: string }): Promise<User> => {
+    const response = await axiosClient.get<User[]>('/users', {
+      params: { email: fbUser.email },
+    });
+    if (response.data && response.data.length > 0) {
+      return response.data[0];
+    }
+    const createResponse = await axiosClient.post<User>('/users', {
+      email: fbUser.email,
+      name: fbUser.name,
+      picture: fbUser.picture,
+    });
+    return createResponse.data;
+  },
 };

@@ -4,7 +4,6 @@ import axios from "axios";
 import { useAppDispatch } from "../store/hooks";
 import { setUser } from "../store/slices/authSlice";
 import { authService } from "../services/authService";
-import { message } from "antd";
 import { useState } from "react";
 
 export default function useGoogleOAuth() {
