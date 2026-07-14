@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { screen, fireEvent, within } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
 import EmployeeTable from "../components/employee/EmployeeTable";
 import { renderWithProviders } from "../utils/test-utils";
 import type { Employee } from "../types/employee";

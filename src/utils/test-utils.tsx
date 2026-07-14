@@ -19,12 +19,12 @@ export function renderWithProviders(
   {
     preloadedState = {},
     // create a new store instance for each render -> to avoid state leakage between tests
-    store = configureStore({
+    store = configureStore<RootState>({
       reducer: {
         auth: authReducer,
         employee: employeeReducer,
       },
-      preloadedState,
+      preloadedState: preloadedState as any,
     }),
     route = "/",
     ...renderOptions
