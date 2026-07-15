@@ -38,10 +38,8 @@ vi.mock("@greatsumini/react-facebook-login", () => ({
         <button
           data-testid="fb-mock-success"
           onClick={() =>
-            props.onProfileSuccess({
-              name: "FB User",
-              email: "fb@example.com",
-              picture: { data: { url: "fb.jpg" } },
+            props.onSuccess({
+              accessToken: "fake_facebook_token",
             })
           }
         >
@@ -50,8 +48,8 @@ vi.mock("@greatsumini/react-facebook-login", () => ({
         <button
           data-testid="fb-mock-success-empty"
           onClick={() =>
-            props.onProfileSuccess({
-              email: "fb@example.com",
+            props.onSuccess({
+              accessToken: "fake_facebook_token_empty",
             })
           }
         >
@@ -159,11 +157,9 @@ describe("LoginPage", () => {
     fireEvent.click(screen.getByTestId("fb-mock-success"));
 
     await waitFor(() => {
-      expect(authService.loginWithFacebook).toHaveBeenCalledWith({
-        name: "FB User",
-        email: "fb@example.com",
-        picture: "fb.jpg",
-      });
+      expect(authService.loginWithFacebook).toHaveBeenCalledWith(
+        "fake_facebook_token",
+      );
       expect(store.getState().auth.user).toEqual(mockUser);
       expect(store.getState().auth.isAuthenticated).toBe(true);
       expect(mockNavigate).toHaveBeenCalledWith("/employees");
@@ -229,11 +225,9 @@ describe("LoginPage", () => {
     fireEvent.click(screen.getByTestId("fb-mock-success-empty"));
 
     await waitFor(() => {
-      expect(authService.loginWithFacebook).toHaveBeenCalledWith({
-        name: "",
-        email: "fb@example.com",
-        picture: undefined,
-      });
+      expect(authService.loginWithFacebook).toHaveBeenCalledWith(
+        "fake_facebook_token_empty",
+      );
       expect(store.getState().auth.user).toEqual(mockUser);
       expect(store.getState().auth.isAuthenticated).toBe(true);
       expect(mockNavigate).toHaveBeenCalledWith("/employees");

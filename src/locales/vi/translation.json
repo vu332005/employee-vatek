@@ -10,7 +10,31 @@
     "login_btn": "Đăng nhập",
     "or_login_with": "Hoặc đăng nhập bằng",
     "success": "Đăng nhập thành công!",
-    "failed": "Đăng nhập thất bại"
+    "failed": "Đăng nhập thất bại",
+    "no_account": "Chưa có tài khoản?",
+    "register_link": "Đăng ký ngay"
+  },
+  "register": {
+    "title": "Tạo tài khoản",
+    "subtitle": "Hệ thống quản lý nhân viên",
+    "name": "Họ và tên",
+    "name_placeholder": "Nhập họ và tên",
+    "name_required": "Vui lòng nhập họ và tên!",
+    "name_min": "Họ tên phải từ 2 ký tự trở lên!",
+    "email": "Email",
+    "email_required": "Vui lòng nhập email!",
+    "email_invalid": "Email không đúng định dạng!",
+    "password": "Mật khẩu",
+    "password_required": "Vui lòng nhập mật khẩu!",
+    "password_min": "Mật khẩu phải từ 6 ký tự trở lên!",
+    "confirm_password": "Xác nhận mật khẩu",
+    "confirm_password_required": "Vui lòng xác nhận mật khẩu!",
+    "confirm_password_mismatch": "Mật khẩu xác nhận không khớp!",
+    "register_btn": "Đăng ký",
+    "success": "Đăng ký thành công! Vui lòng đăng nhập.",
+    "failed": "Đăng ký thất bại",
+    "have_account": "Đã có tài khoản?",
+    "login_link": "Đăng nhập"
   },
   "header": {
     "title": "Employee Management",
@@ -73,6 +97,8 @@
     "image_label": "Ảnh đại diện (URL)",
     "image_placeholder": "Nhập URL ảnh đại diện",
     "image_required": "Vui lòng nhập URL ảnh đại diện!",
-    "image_invalid": "Vui lòng nhập link ảnh hợp lệ!"
+    "image_invalid": "Vui lòng nhập link ảnh hợp lệ!",
+    "password_label": "Mật khẩu",
+    "password_required": "Vui lòng nhập mật khẩu!"
   }
 }

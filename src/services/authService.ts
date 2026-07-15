@@ -1,42 +1,81 @@
-import axiosClient from '../configs/axiosClient';
-import type { User } from '../types/auth';
+import axiosClient from "../configs/axiosClient";
+import type { User } from "../types/auth";
+
+interface AuthResponse {
+  user: User;
+  accessToken: string;
+}
+
+interface RegisterResponse {
+  message: string;
+  user: User;
+}
 
 export const authService = {
   login: async (email: string, password: string): Promise<User> => {
-    const response = await axiosClient.get<User[]>('/users', {
-      params: { email, password },
+    const response = await axiosClient.post<AuthResponse>("/auth/login", {
+      email,
+      password,
     });
-    if (response.data && response.data.length > 0) {
-      return response.data[0];
+    if (response.data.accessToken) {
+      localStorage.setItem("accessToken", response.data.accessToken);
+      return response.data.user;
     }
-    throw new Error('Email hoặc mật khẩu không chính xác!');
+    throw new Error("Đăng nhập thất bại!");
   },
-  loginWithGoogle: async (googleUser: { email: string; name: string; picture?: string }): Promise<User> => {
-    const response = await axiosClient.get<User[]>('/users', {
-      params: { email: googleUser.email },
-    });
-    if (response.data && response.data.length > 0) {
-      return response.data[0];
+
+  loginWithGoogle: async (accessToken: string): Promise<User> => {
+    const response = await axiosClient.post<AuthResponse>(
+      "/auth/google-login",
+      {
+        accessToken,
+      },
+    );
+    if (response.data.accessToken) {
+      localStorage.setItem("accessToken", response.data.accessToken);
+      return response.data.user;
     }
-    const createResponse = await axiosClient.post<User>('/users', {
-      email: googleUser.email,
-      name: googleUser.name,
-      picture: googleUser.picture,
-    });
-    return createResponse.data;
+    throw new Error("Đăng nhập Google thất bại!");
   },
-  loginWithFacebook: async (fbUser: { email: string; name: string; picture?: string }): Promise<User> => {
-    const response = await axiosClient.get<User[]>('/users', {
-      params: { email: fbUser.email },
-    });
-    if (response.data && response.data.length > 0) {
-      return response.data[0];
+
+  loginWithFacebook: async (accessToken: string): Promise<User> => {
+    const response = await axiosClient.post<AuthResponse>(
+      "/auth/facebook-login",
+      {
+        accessToken,
+      },
+    );
+    if (response.data.accessToken) {
+      localStorage.setItem("accessToken", response.data.accessToken);
+      return response.data.user;
     }
-    const createResponse = await axiosClient.post<User>('/users', {
-      email: fbUser.email,
-      name: fbUser.name,
-      picture: fbUser.picture,
-    });
-    return createResponse.data;
+    throw new Error("Đăng nhập Facebook thất bại!");
+  },
+
+  register: async (
+    name: string,
+    email: string,
+    password: string,
+  ): Promise<RegisterResponse> => {
+    const response = await axiosClient.post<RegisterResponse>(
+      "/auth/register",
+      {
+        name,
+        email,
+        password,
+      },
+    );
+    return response.data;
+  },
+
+  logout: async (): Promise<void> => {
+    try {
+      await axiosClient.post("/auth/logout");
+    } catch {
+      // Ke ca khi request loi, van clear localStorage phia client
+    } finally {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("user");
+    }
   },
 };

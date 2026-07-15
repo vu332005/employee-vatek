@@ -120,6 +120,9 @@ describe("EmployeeFormModal", () => {
     fireEvent.change(screen.getByLabelText("form.image_label"), {
       target: { value: "https://example.com/john.jpg" },
     });
+    fireEvent.change(screen.getByLabelText("form.password_label"), {
+      target: { value: "password123" },
+    });
 
     const okBtn = screen.getByRole("button", { name: "form.ok_add" });
     fireEvent.click(okBtn);
@@ -128,6 +131,7 @@ describe("EmployeeFormModal", () => {
       expect(onSaveMock).toHaveBeenCalledWith({
         name: "John Doe",
         email: "john@example.com",
+        password: "password123",
         age: 25,
         phone: "0901234567",
         country: "USA",

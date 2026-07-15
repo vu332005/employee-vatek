@@ -79,12 +79,31 @@ const EmployeeFormModal = ({
           <Input placeholder={t("form.email_placeholder")} />
         </Form.Item>
 
+        <Form.Item
+          name="password"
+          label={t("form.password_label") || "Mật khẩu"}
+          rules={[
+            {
+              required: !editingEmployee,
+              message: t("form.password_required") || "Vui lòng nhập mật khẩu!",
+            },
+            { min: 6, message: "Mật khẩu phải từ 6 ký tự trở lên!" },
+          ]}
+        >
+          <Input.Password
+            placeholder={
+              editingEmployee
+                ? "Để trống nếu không muốn đổi mật khẩu"
+                : "Nhập mật khẩu đăng nhập"
+            }
+          />
+        </Form.Item>
+
         <div className="grid grid-cols-2 gap-4">
           <Form.Item
             name="age"
             label={t("form.age_label")}
             rules={[
-              { required: true, message: t("form.age_required") },
               {
                 type: "number",
                 min: 18,
@@ -93,14 +112,16 @@ const EmployeeFormModal = ({
               },
             ]}
           >
-            <InputNumber className="w-full" placeholder={t("form.age_placeholder")} />
+            <InputNumber
+              className="w-full"
+              placeholder={t("form.age_placeholder")}
+            />
           </Form.Item>
 
           <Form.Item
             name="phone"
             label={t("form.phone_label")}
             rules={[
-              { required: true, message: t("form.phone_required") },
               {
                 pattern: /^[0-9+()\s-]{10,15}$/,
                 message: t("form.phone_invalid"),
@@ -111,11 +132,7 @@ const EmployeeFormModal = ({
           </Form.Item>
         </div>
 
-        <Form.Item
-          name="country"
-          label={t("form.country_label")}
-          rules={[{ required: true, message: t("form.country_required") }]}
-        >
+        <Form.Item name="country" label={t("form.country_label")}>
           <Input placeholder={t("form.country_placeholder")} />
         </Form.Item>
 
@@ -123,7 +140,7 @@ const EmployeeFormModal = ({
           name="image"
           label={t("form.image_label")}
           rules={[
-            { required: true, message: t("form.image_required") },
+            // { required: true, message: t("form.image_required") },
             { type: "url", message: t("form.image_invalid") },
           ]}
         >

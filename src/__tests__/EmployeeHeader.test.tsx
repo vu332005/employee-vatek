@@ -1,8 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { screen, fireEvent } from "@testing-library/react";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
 import EmployeeHeader from "../components/share/EmployeeHeader";
 import { renderWithProviders } from "../utils/test-utils";
 import { message } from "antd";
+import { authService } from "../services/authService";
 
 const mockNavigate = vi.fn();
 vi.mock("react-router-dom", async () => {
@@ -12,6 +13,12 @@ vi.mock("react-router-dom", async () => {
     useNavigate: () => mockNavigate,
   };
 });
+
+vi.mock("../services/authService", () => ({
+  authService: {
+    logout: vi.fn().mockResolvedValue(undefined),
+  },
+}));
 
 vi.mock("antd", async () => {
   const original = await vi.importActual("antd");
@@ -61,7 +68,7 @@ describe("EmployeeHeader", () => {
     expect(screen.getByText("John Doe")).toBeInTheDocument();
   });
 
-  it("should dispatch logout action, show success message, and navigate to login page upon click", () => {
+  it("should dispatch logout action, show success message, and navigate to login page upon click", async () => {
     const { store } = renderWithProviders(<EmployeeHeader />, {
       preloadedState: {
         auth: {
@@ -76,11 +83,12 @@ describe("EmployeeHeader", () => {
     const logoutBtn = screen.getByText("header.logout").closest("button")!;
     fireEvent.click(logoutBtn);
 
-    expect(store.getState().auth.isAuthenticated).toBe(false);
-    expect(store.getState().auth.user).toBeNull();
-
-    expect(message.success).toHaveBeenCalledWith("header.logout_success");
-
-    expect(mockNavigate).toHaveBeenCalledWith("/login");
+    await waitFor(() => {
+      expect(authService.logout).toHaveBeenCalled();
+      expect(store.getState().auth.isAuthenticated).toBe(false);
+      expect(store.getState().auth.user).toBeNull();
+      expect(message.success).toHaveBeenCalledWith("header.logout_success");
+      expect(mockNavigate).toHaveBeenCalledWith("/login");
+    });
   });
 });

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { logout } from "../../store/slices/authSlice";
+import { authService } from "../../services/authService";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 const EmployeeHeader = () => {
@@ -12,7 +13,8 @@ const EmployeeHeader = () => {
   const user = useAppSelector((state) => state.auth.user);
   const { t } = useTranslation();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await authService.logout();
     dispatch(logout());
     message.success(t("header.logout_success"));
     navigate("/login");
@@ -27,7 +29,10 @@ const EmployeeHeader = () => {
       </div>
       <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4">
         {/* Language Switcher */}
-        <LanguageSwitcher className="bg-gray-50/50 hover:bg-gray-50" size="small" />
+        <LanguageSwitcher
+          className="bg-gray-50/50 hover:bg-gray-50"
+          size="small"
+        />
 
         <div className="flex items-center gap-2 text-gray-700">
           <UserOutlined className="text-gray-500 bg-gray-100 p-2 rounded-full" />

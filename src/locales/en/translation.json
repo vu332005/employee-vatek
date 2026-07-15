@@ -10,7 +10,31 @@
     "login_btn": "Log In",
     "or_login_with": "Or log in with",
     "success": "Logged in successfully!",
-    "failed": "Log in failed"
+    "failed": "Log in failed",
+    "no_account": "Don't have an account?",
+    "register_link": "Register now"
+  },
+  "register": {
+    "title": "Create Account",
+    "subtitle": "Employee Management System",
+    "name": "Full Name",
+    "name_placeholder": "Enter your full name",
+    "name_required": "Please enter your full name!",
+    "name_min": "Full name must be at least 2 characters!",
+    "email": "Email",
+    "email_required": "Please enter your email!",
+    "email_invalid": "Invalid email format!",
+    "password": "Password",
+    "password_required": "Please enter your password!",
+    "password_min": "Password must be at least 6 characters!",
+    "confirm_password": "Confirm Password",
+    "confirm_password_required": "Please confirm your password!",
+    "confirm_password_mismatch": "Passwords do not match!",
+    "register_btn": "Register",
+    "success": "Registration successful! Please log in.",
+    "failed": "Registration failed",
+    "have_account": "Already have an account?",
+    "login_link": "Log in"
   },
   "header": {
     "title": "Employee Management",
@@ -73,6 +97,8 @@
     "image_label": "Avatar URL",
     "image_placeholder": "Enter avatar image URL",
     "image_required": "Please enter avatar URL!",
-    "image_invalid": "Please enter a valid URL!"
+    "image_invalid": "Please enter a valid URL!",
+    "password_label": "Password",
+    "password_required": "Please enter password!"
   }
 }

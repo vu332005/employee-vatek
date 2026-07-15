@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
 import { useAppDispatch } from "../store/hooks";
 import { setUser } from "../store/slices/authSlice";
 import { authService } from "../services/authService";
@@ -15,20 +14,9 @@ export default function useGoogleOAuth() {
     onSuccess: async (tokenResponse) => {
       setLoading(true);
       try {
-        const { data } = await axios.get(
-          "https://www.googleapis.com/oauth2/v3/userinfo",
-          {
-            headers: {
-              Authorization: `Bearer ${tokenResponse.access_token}`,
-            },
-          },
+        const user = await authService.loginWithGoogle(
+          tokenResponse.access_token,
         );
-
-        const user = await authService.loginWithGoogle({
-          name: data.name,
-          email: data.email,
-          picture: data.picture,
-        });
 
         dispatch(setUser(user));
         navigate("/employees");

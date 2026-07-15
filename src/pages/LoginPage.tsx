@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Form, Input, Button, Card, message } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import FacebookLogin from "@greatsumini/react-facebook-login";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../store/hooks";
@@ -38,19 +38,20 @@ const LoginPage = () => {
     }
   };
 
-  const handleFacebookSuccess = async (profile: any) => {
+  const handleFacebookSuccess = async (response: any) => {
     setFbLoading(true);
     try {
-      const email = profile.email;
-      const user = await authService.loginWithFacebook({
-        name: profile.name || "",
-        email: email,
-        picture: profile.picture?.data?.url,
-      });
+      const accessToken =
+        response.accessToken || response.authResponse?.accessToken;
+      if (!accessToken) {
+        throw new Error("Không nhận được mã xác thực Facebook (accessToken)!");
+      }
+      const user = await authService.loginWithFacebook(accessToken);
       dispatch(setUser(user));
       navigate("/employees");
     } catch (error: any) {
       console.error("Lỗi xác thực Facebook:", error);
+      message.error(error.message || "Xác thực qua Facebook thất bại!");
     } finally {
       setFbLoading(false);
     }
@@ -71,7 +72,6 @@ const LoginPage = () => {
           </h2>
           <p className="text-gray-400 text-sm mt-1">{t("login.subtitle")}</p>
         </div>
-
         <Form
           name="login_form"
           layout="vertical"
@@ -117,7 +117,6 @@ const LoginPage = () => {
             </Button>
           </Form.Item>
         </Form>
-
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-200"></div>
@@ -128,7 +127,6 @@ const LoginPage = () => {
             </span>
           </div>
         </div>
-
         <div className="flex gap-4">
           <Button
             type="default"
@@ -143,7 +141,7 @@ const LoginPage = () => {
 
           <FacebookLoginComponent
             appId={appId}
-            onProfileSuccess={handleFacebookSuccess}
+            onSuccess={handleFacebookSuccess}
             onFail={(error) => {
               console.error("Facebook Login Failed:", error);
             }}
@@ -160,6 +158,15 @@ const LoginPage = () => {
               </Button>
             )}
           />
+        </div>
+        <div className="mt-5 text-sm text-gray-500 text-center">
+          {t("login.no_account")}{" "}
+          <Link
+            to="/register"
+            className="text-blue-600 font-medium hover:underline"
+          >
+            {t("login.register_link")}
+          </Link>
         </div>
       </Card>
     </div>
