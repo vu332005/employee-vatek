@@ -40,7 +40,8 @@
     "title": "Employee Management",
     "logout": "Đăng xuất",
     "logout_success": "Đăng xuất thành công!",
-    "admin": "Quản trị viên"
+    "admin": "Quản trị viên",
+    "admin_page": "Trang Admin"
   },
   "employee": {
     "list_title": "Danh Sách Nhân Viên",
@@ -100,5 +101,12 @@
     "image_invalid": "Vui lòng nhập link ảnh hợp lệ!",
     "password_label": "Mật khẩu",
     "password_required": "Vui lòng nhập mật khẩu!"
+  },
+  "admin": {
+    "title": "Chào mừng Admin!",
+    "back_btn": "Quay lại Trang Nhân viên"
+  },
+  "common": {
+    "unauthorized": "Bạn không có quyền truy cập trang này!"
   }
 }

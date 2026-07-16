@@ -1,4 +1,4 @@
-import { Button, message } from "antd";
+import { Button, App } from "antd";
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -8,6 +8,7 @@ import { authService } from "../../services/authService";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 const EmployeeHeader = () => {
+  const { message } = App.useApp();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.auth.user);
@@ -33,6 +34,16 @@ const EmployeeHeader = () => {
           className="bg-gray-50/50 hover:bg-gray-50"
           size="small"
         />
+
+        {user?.role === "admin" && (
+          <Button
+            type="default"
+            onClick={() => navigate("/admin")}
+            className="border-blue-500 text-blue-600 hover:text-blue-700 hover:border-blue-600 font-medium"
+          >
+            {t("header.admin_page", "Trang Admin")}
+          </Button>
+        )}
 
         <div className="flex items-center gap-2 text-gray-700">
           <UserOutlined className="text-gray-500 bg-gray-100 p-2 rounded-full" />

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Input, Button, Card, message } from "antd";
+import { Form, Input, Button, Card, App } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
 import FacebookLogin from "@greatsumini/react-facebook-login";
@@ -16,6 +16,7 @@ const FacebookLoginComponent = ((FacebookLogin as any).default ||
   FacebookLogin) as typeof FacebookLogin;
 
 const LoginPage = () => {
+  const { message } = App.useApp();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [fbLoading, setFbLoading] = useState(false);

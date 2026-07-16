@@ -57,7 +57,12 @@ describe("ProtectedRoute", () => {
       {
         preloadedState: {
           auth: {
-            user: { id: "1", email: "a@gmail.com", name: "Admin" },
+            user: {
+              id: "1",
+              email: "a@gmail.com",
+              name: "Admin",
+              role: "employee",
+            },
             isAuthenticated: true,
             loading: false,
             error: null,

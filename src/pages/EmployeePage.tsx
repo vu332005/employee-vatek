@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, message, Layout } from "antd";
+import { Button, Layout, App } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
@@ -19,6 +19,7 @@ import socket from "../configs/socketClient";
 
 const EmployeePage = () => {
   const { t } = useTranslation();
+  const { message } = App.useApp();
   const dispatch = useAppDispatch();
   const { employees } = useAppSelector((state) => state.employee);
 
