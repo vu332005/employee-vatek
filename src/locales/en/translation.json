@@ -40,7 +40,8 @@
     "title": "Employee Management",
     "logout": "Log Out",
     "logout_success": "Logged out successfully!",
-    "admin": "Administrator"
+    "admin": "Administrator",
+    "admin_page": "Admin Page"
   },
   "employee": {
     "list_title": "Employee List",
@@ -100,5 +101,12 @@
     "image_invalid": "Please enter a valid URL!",
     "password_label": "Password",
     "password_required": "Please enter password!"
+  },
+  "admin": {
+    "title": "Welcome Admin!",
+    "back_btn": "Back to Employee Dashboard"
+  },
+  "common": {
+    "unauthorized": "You are not authorized to access this page!"
   }
 }

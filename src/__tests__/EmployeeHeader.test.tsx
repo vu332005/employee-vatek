@@ -22,12 +22,19 @@ vi.mock("../services/authService", () => ({
 
 vi.mock("antd", async () => {
   const original = await vi.importActual("antd");
+  const mockMessage = {
+    success: vi.fn(),
+    error: vi.fn(),
+    warning: vi.fn(),
+  };
   return {
     ...original,
-    message: {
-      success: vi.fn(),
-      error: vi.fn(),
-      warning: vi.fn(),
+    message: mockMessage,
+    App: {
+      ...original.App,
+      useApp: () => ({
+        message: mockMessage,
+      }),
     },
   };
 });
@@ -57,7 +64,12 @@ describe("EmployeeHeader", () => {
     renderWithProviders(<EmployeeHeader />, {
       preloadedState: {
         auth: {
-          user: { id: "1", email: "admin@gmail.com", name: "John Doe" },
+          user: {
+            id: "1",
+            email: "admin@gmail.com",
+            name: "John Doe",
+            role: "admin",
+          },
           isAuthenticated: true,
           loading: false,
           error: null,
@@ -72,7 +84,12 @@ describe("EmployeeHeader", () => {
     const { store } = renderWithProviders(<EmployeeHeader />, {
       preloadedState: {
         auth: {
-          user: { id: "1", email: "admin@gmail.com", name: "John Doe" },
+          user: {
+            id: "1",
+            email: "admin@gmail.com",
+            name: "John Doe",
+            role: "admin",
+          },
           isAuthenticated: true,
           loading: false,
           error: null,

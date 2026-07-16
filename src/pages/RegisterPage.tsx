@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Input, Button, Card, message } from "antd";
+import { Form, Input, Button, Card, App } from "antd";
 import { MailOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -7,6 +7,7 @@ import { authService } from "../services/authService";
 import LanguageSwitcher from "../components/share/LanguageSwitcher";
 
 const RegisterPage = () => {
+  const { message } = App.useApp();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();

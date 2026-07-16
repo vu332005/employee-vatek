@@ -18,11 +18,19 @@ vi.mock("../services/employeeService", () => ({
 
 vi.mock("antd", async () => {
   const original = await vi.importActual("antd");
+  const mockMessage = {
+    success: vi.fn(),
+    error: vi.fn(),
+    warning: vi.fn(),
+  };
   return {
     ...original,
-    message: {
-      success: vi.fn(),
-      error: vi.fn(),
+    message: mockMessage,
+    App: {
+      ...original.App,
+      useApp: () => ({
+        message: mockMessage,
+      }),
     },
   };
 });
