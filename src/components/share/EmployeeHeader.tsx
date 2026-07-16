@@ -1,5 +1,5 @@
 import { Button, App } from "antd";
-import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
+import { LogoutOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -46,7 +46,11 @@ const EmployeeHeader = () => {
         )}
 
         <div className="flex items-center gap-2 text-gray-700">
-          <UserOutlined className="text-gray-500 bg-gray-100 p-2 rounded-full" />
+          <img
+            src={user?.image}
+            alt="Avatar"
+            className="rounded-full w-8 h-8"
+          />
           <span className="font-semibold text-sm">
             {user?.name || t("header.admin")}
           </span>
