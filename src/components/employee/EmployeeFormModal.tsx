@@ -1,7 +1,9 @@
-import { useEffect } from "react";
-import { Modal, Form, Input, InputNumber } from "antd";
+import { useEffect, useState } from "react";
+import { Modal, Form, Input, InputNumber, App } from "antd";
 import { useTranslation } from "react-i18next";
 import type { Employee } from "../../types/employee";
+import AvatarUploader from "./AvatarUploader";
+import axiosClient from "../../configs/axiosClient";
 
 interface EmployeeFormModalProps {
   open: boolean;
@@ -19,10 +21,14 @@ const EmployeeFormModal = ({
   confirmLoading,
 }: EmployeeFormModalProps) => {
   const { t } = useTranslation();
+  const { message } = App.useApp();
   const [form] = Form.useForm();
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (open) {
+      setSelectedFile(null);
       if (editingEmployee) {
         form.setFieldsValue(editingEmployee);
       } else {
@@ -34,10 +40,37 @@ const EmployeeFormModal = ({
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
-      await onSave(values);
+      setUploading(true);
+
+      let imageUrl = values.image || "";
+
+      // only excute when upload new file
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append("image", selectedFile);
+
+        const response = await axiosClient.post<{ url: string }>(
+          "/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          },
+        );
+        imageUrl = response.data.url;
+      }
+
+      await onSave({ ...values, image: imageUrl });
       form.resetFields();
-    } catch (error) {
-      console.error("Validation failed:", error);
+      setSelectedFile(null);
+    } catch (error: any) {
+      console.error("Validation or upload failed:", error);
+      if (error.message) {
+        message.error(error.message);
+      }
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -47,7 +80,7 @@ const EmployeeFormModal = ({
       open={open}
       onOk={handleSubmit}
       onCancel={onCancel}
-      confirmLoading={confirmLoading}
+      confirmLoading={confirmLoading || uploading}
       okText={editingEmployee ? t("form.ok_edit") : t("form.ok_add")}
       cancelText={t("form.cancel")}
     >
@@ -136,15 +169,8 @@ const EmployeeFormModal = ({
           <Input placeholder={t("form.country_placeholder")} />
         </Form.Item>
 
-        <Form.Item
-          name="image"
-          label={t("form.image_label")}
-          rules={[
-            // { required: true, message: t("form.image_required") },
-            { type: "url", message: t("form.image_invalid") },
-          ]}
-        >
-          <Input placeholder={t("form.image_placeholder")} />
+        <Form.Item name="image" label={t("form.image_label")}>
+          <AvatarUploader onFileSelected={setSelectedFile} />
         </Form.Item>
       </Form>
     </Modal>
