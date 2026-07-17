@@ -86,19 +86,23 @@ const EmployeePage = () => {
     setModalOpen(true);
   };
 
-  const handleSave = async (values: Omit<Employee, "id">) => {
+  const handleSave = async (
+    values: Omit<Employee, "id">,
+    file: File | null,
+  ) => {
     setSaveLoading(true);
     try {
       if (editingEmployee) {
-        const updated = await employeeService.update(
-          editingEmployee.id,
-          values,
-        );
+        const updated = file
+          ? await employeeService.update(editingEmployee.id, values, file)
+          : await employeeService.update(editingEmployee.id, values);
         dispatch(updateEmployee(updated));
         message.success(t("employee.save_success_update"));
         socket.emit("notify_change", { type: "update", payload: updated });
       } else {
-        const created = await employeeService.create(values);
+        const created = file
+          ? await employeeService.create(values, file)
+          : await employeeService.create(values);
         dispatch(addEmployee(created));
         message.success(t("employee.save_success_create"));
         socket.emit("notify_change", { type: "create", payload: created });

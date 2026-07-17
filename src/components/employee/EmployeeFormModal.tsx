@@ -3,12 +3,14 @@ import { Modal, Form, Input, InputNumber, App } from "antd";
 import { useTranslation } from "react-i18next";
 import type { Employee } from "../../types/employee";
 import AvatarUploader from "./AvatarUploader";
-import axiosClient from "../../configs/axiosClient";
 
 interface EmployeeFormModalProps {
   open: boolean;
   editingEmployee: Employee | null;
-  onSave: (values: Omit<Employee, "id">) => Promise<void> | void;
+  onSave: (
+    values: Omit<Employee, "id">,
+    file?: File | null,
+  ) => Promise<void> | void;
   onCancel: () => void;
   confirmLoading: boolean;
 }
@@ -24,7 +26,6 @@ const EmployeeFormModal = ({
   const { message } = App.useApp();
   const [form] = Form.useForm();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -40,37 +41,18 @@ const EmployeeFormModal = ({
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
-      setUploading(true);
-
-      let imageUrl = values.image || "";
-
-      // only excute when upload new file
       if (selectedFile) {
-        const formData = new FormData();
-        formData.append("image", selectedFile);
-
-        const response = await axiosClient.post<{ url: string }>(
-          "/upload",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          },
-        );
-        imageUrl = response.data.url;
+        await onSave(values, selectedFile);
+      } else {
+        await onSave(values);
       }
-
-      await onSave({ ...values, image: imageUrl });
       form.resetFields();
       setSelectedFile(null);
     } catch (error: any) {
-      console.error("Validation or upload failed:", error);
+      console.error("Validation or save failed:", error);
       if (error.message) {
         message.error(error.message);
       }
-    } finally {
-      setUploading(false);
     }
   };
 
@@ -80,7 +62,7 @@ const EmployeeFormModal = ({
       open={open}
       onOk={handleSubmit}
       onCancel={onCancel}
-      confirmLoading={confirmLoading || uploading}
+      confirmLoading={confirmLoading}
       okText={editingEmployee ? t("form.ok_edit") : t("form.ok_add")}
       cancelText={t("form.cancel")}
     >
