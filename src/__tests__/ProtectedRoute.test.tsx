@@ -61,7 +61,7 @@ describe("ProtectedRoute", () => {
               id: "1",
               email: "a@gmail.com",
               name: "Admin",
-              role: "employee",
+              roles: ["employee"],
             },
             isAuthenticated: true,
             loading: false,

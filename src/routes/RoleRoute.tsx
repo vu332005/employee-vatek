@@ -2,22 +2,25 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAppSelector } from "../store/hooks";
 
-interface AdminRouteProps {
+interface RoleRouteProps {
   children: React.ReactNode;
+  allowedRoles: string[];
 }
 
-const AdminRoute = ({ children }: AdminRouteProps) => {
+const RoleRoute = ({ children, allowedRoles }: RoleRouteProps) => {
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
-  if (user?.role !== "admin") {
+  const hasRole = user?.roles?.some((role) => allowedRoles.includes(role));
+
+  if (!hasRole) {
     return <Navigate to="/employees" replace />;
   }
 
   return <>{children}</>;
 };
 
-export default AdminRoute;
+export default RoleRoute;

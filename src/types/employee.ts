@@ -7,7 +7,7 @@ export interface Employee {
   phone: string;
   country: string;
   image: string;
-  role?: "admin" | "employee";
+  roles?: string[];
 }
 
 export interface EmployeeState {
