@@ -9,8 +9,9 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import EmployeePage from "./pages/EmployeePage";
 import AdminPage from "./pages/AdminPage";
+import MarketingPage from "./pages/MarketingPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import AdminRoute from "./routes/AdminRoute";
+import RoleRoute from "./routes/RoleRoute";
 import useSocket from "./hooks/useSocket";
 
 const App = () => {
@@ -55,9 +56,17 @@ const App = () => {
             <Route
               path="/admin"
               element={
-                <AdminRoute>
+                <RoleRoute allowedRoles={["admin"]}>
                   <AdminPage />
-                </AdminRoute>
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="/marketing"
+              element={
+                <RoleRoute allowedRoles={["marketing"]}>
+                  <MarketingPage />
+                </RoleRoute>
               }
             />
             <Route path="*" element={<Navigate to="/employees" replace />} />

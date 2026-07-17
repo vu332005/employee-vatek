@@ -114,5 +114,9 @@
   },
   "common": {
     "unauthorized": "Bạn không có quyền truy cập trang này!"
+  },
+  "marketing": {
+    "title": "Chào mừng đến với Trang Marketing!",
+    "back_btn": "Quay lại Trang Nhân viên"
   }
 }

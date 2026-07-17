@@ -35,13 +35,23 @@ const EmployeeHeader = () => {
           size="small"
         />
 
-        {user?.role === "admin" && (
+        {user?.roles?.includes("admin") && (
           <Button
             type="default"
             onClick={() => navigate("/admin")}
             className="border-blue-500 text-blue-600 hover:text-blue-700 hover:border-blue-600 font-medium"
           >
             {t("header.admin_page", "Trang Admin")}
+          </Button>
+        )}
+
+        {user?.roles?.includes("marketing") && (
+          <Button
+            type="default"
+            onClick={() => navigate("/marketing")}
+            className="border-purple-500 text-purple-600 hover:text-purple-700 hover:border-purple-600 font-medium"
+          >
+            {t("header.marketing_page", "Trang Marketing")}
           </Button>
         )}
 

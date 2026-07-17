@@ -5,7 +5,7 @@ export interface User extends Partial<Omit<Employee, "password">> {
   id: string;
   email: string;
   name: string;
-  role: "admin" | "employee";
+  roles: string[];
 }
 
 export interface AuthState {

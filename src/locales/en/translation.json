@@ -114,5 +114,9 @@
   },
   "common": {
     "unauthorized": "You are not authorized to access this page!"
+  },
+  "marketing": {
+    "title": "Welcome to Marketing Page!",
+    "back_btn": "Back to Employee Dashboard"
   }
 }
