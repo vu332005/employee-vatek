@@ -17,6 +17,20 @@ describe("EmployeeTable", () => {
     },
   ];
 
+  const adminState = {
+    auth: {
+      user: {
+        id: "1",
+        email: "admin@gmail.com",
+        name: "Admin",
+        roles: ["admin"],
+      },
+      isAuthenticated: true,
+      loading: false,
+      error: null,
+    },
+  };
+
   it("should render table headers and employee rows correctly", () => {
     renderWithProviders(
       <EmployeeTable
@@ -47,6 +61,7 @@ describe("EmployeeTable", () => {
         onEdit={onEditMock}
         onDelete={() => {}}
       />,
+      { preloadedState: adminState },
     );
 
     const editBtn = screen.getByText("table.edit").closest("button")!;
@@ -64,6 +79,7 @@ describe("EmployeeTable", () => {
         onEdit={() => {}}
         onDelete={onDeleteMock}
       />,
+      { preloadedState: adminState },
     );
 
     const deleteBtn = screen.getByText("table.delete").closest("button")!;

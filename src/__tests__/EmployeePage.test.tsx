@@ -63,6 +63,11 @@ vi.mock("../components/employee/EmployeeFormModal", () => ({
   },
 }));
 
+vi.mock("../components/share/HasPermission", () => ({
+  default: ({ children }: any) => children,
+  useHasPermission: () => true,
+}));
+
 describe("EmployeePage", () => {
   const mockEmployees: Employee[] = [
     {

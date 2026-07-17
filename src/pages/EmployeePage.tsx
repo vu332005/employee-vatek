@@ -14,6 +14,7 @@ import SearchBar from "../components/employee/SearchBar";
 import EmployeeTable from "../components/employee/EmployeeTable";
 import EmployeeFormModal from "../components/employee/EmployeeFormModal";
 import EmployeeHeader from "../components/share/EmployeeHeader";
+import HasPermission from "../components/share/HasPermission";
 import type { Employee } from "../types/employee";
 import socket from "../configs/socketClient";
 
@@ -127,14 +128,16 @@ const EmployeePage = () => {
             </h1>
             <div className="flex flex-col sm:flex-row gap-3">
               <SearchBar value={searchQuery} onChange={setSearchQuery} />
-              <Button
-                type="primary"
-                icon={<PlusOutlined />}
-                onClick={handleAddClick}
-                className="h-10 text-sm font-semibold"
-              >
-                {t("employee.add_btn")}
-              </Button>
+              <HasPermission allowedRoles={["admin"]}>
+                <Button
+                  type="primary"
+                  icon={<PlusOutlined />}
+                  onClick={handleAddClick}
+                  className="h-10 text-sm font-semibold"
+                >
+                  {t("employee.add_btn")}
+                </Button>
+              </HasPermission>
             </div>
           </div>
 
